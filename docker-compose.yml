@@ -1,0 +1,99 @@
+version: '3.1'
+services:
+    redis:
+        image: "redis:alpine"
+        command: redis-server
+        ports:
+            - "6379:6379"
+        volumes:
+            - $PWD/redis-data:/var/lib/redis
+                - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+        environment:
+            - REDIS_REPLICATION_MODE=master
+        networks:
+            - net
+#    web:
+#        build: ./
+##        command: python manage.py runserver 0.0.0.0:8000
+#        volumes:
+#          - ./:/usr/src/app/
+##        env_file:
+##            - ./.env.dev
+#        ports:
+#          - 8000:8000
+#        depends_on:
+#            - redis
+##            - postgres
+#        networks:
+#            - net
+#    postgres:
+#        container_name: postgres_container
+#        image: postgres:13.3
+#        restart: unless-stopped
+#        command:
+#            - "postgres"
+#            - "-c"
+#            - "max_connections=50"
+#            - "-c"
+#            - "shared_buffers=1GB"
+#            - "-c"
+#            - "effective_cache_size=1GB"
+#            - "-c"
+#            - "work_mem=16MB"
+#            - "-c"
+#            - "maintenance_work_mem=512MB"
+#            - "-c"
+#            - "random_page_cost=1.1"
+#            - "-c"
+#            - "temp_file_limit=10GB"
+#            - "-c"
+#            - "log_min_duration_statement=200ms"
+#            - "-c"
+#            - "idle_in_transaction_session_timeout=10s"
+#            - "-c"
+#            - "lock_timeout=1s"
+#            - "-c"
+#            - "statement_timeout=60s"
+#            - "-c"
+#            - "shared_preload_libraries=pg_stat_statements"
+#            - "-c"
+#            - "pg_stat_statements.max=10000"
+#            - "-c"
+#            - "pg_stat_statements.track=all"
+#        environment:
+#            POSTGRES_DB: "db"
+#            POSTGRES_USER: "user"
+#            POSTGRES_PASSWORD: "r56iytetja1"
+#            PGDATA: "/var/lib/postgresql/data/pgdata"
+#        volumes:
+#            - ./2. Init Database/dump_init.sql:/docker-entrypoint-initdb.d/dump_init.sql
+#            - .:/var/lib/postgresql/data
+#        ports:
+#            - "5432:5432"
+#        networks:
+#            - net
+#
+#    pgadmin:
+#        container_name: pgadmin_container
+#        image: dpage/pgadmin4
+#        environment:
+#            PGADMIN_DEFAULT_EMAIL: "pgadmintender@pgadmintender.com"
+#            PGADMIN_DEFAULT_PASSWORD: "pgadmin"
+#            PGADMIN_CONFIG_SERVER_MODE: "False"
+#        volumes:
+#            - ./pgadmin:/var/lib/pgadmin
+#        ports:
+#            - "5050:80"
+#        restart: unless-stopped
+#        depends_on:
+#            - postgres
+#        deploy:
+#            resources:
+#                limits:
+#                    cpus: '0.5'
+#                    memory: 1G
+#        networks:
+#            - net
+networks:
+  net:
+    driver: bridge
